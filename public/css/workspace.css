@@ -1,0 +1,27 @@
+.content-wrapper{
+  width: 100%;
+  height: 98vh;
+}
+
+.blocks-and-code{
+  width: 100%;
+  display:inline-block;
+  vertical-align:top;
+  height: 90vh;
+}
+
+#blockly-area{
+  float: left;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+}
+
+#blockly-div{
+  height: 100%;
+  min-height: 100%;
+}
+
+.workspace-controls{
+  display:inline-block;
+}
