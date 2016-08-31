@@ -15,7 +15,7 @@
       'angular-storage': '../lib/angular-local-storage/dist/angular-local-storage.min',
       'app': './app',
       'app.msg': './msg/' + appLanguage,
-      'blockly': './blockly-extended',
+      'blockly.inject': './blockly/blockly-extended',
       'blockly.base': '../lib/blockly/blockly_compressed',
       'blockly.blocks': '../lib/blockly/blocks_compressed',
       'blockly.msg': '../lib/blockly/msg/js/' + appLanguage,
@@ -50,7 +50,7 @@
         'blockly.base',
         'blockly.msg'
       ],
-      'blockly': {
+      'blockly.inject': {
         deps: [
           'blockly.base',
           'blockly.blocks',

@@ -12,7 +12,7 @@
 
 #blockly-area{
   float: left;
-  width: 100%;
+  width: 60%;
   height: 100%;
   min-height: 100%;
 }
@@ -22,6 +22,13 @@
   min-height: 100%;
 }
 
+#code-preview{
+  display:inline-block;
+  width: 40%;
+  height: 100%;
+  min-height: 100%;
+  overflow: auto;
+}
 .workspace-controls{
   display:inline-block;
 }

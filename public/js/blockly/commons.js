@@ -1,0 +1,3 @@
+define(['blockly.inject'], function(){
+
+});

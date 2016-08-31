@@ -1,7 +1,7 @@
 define(['blockly.javascript',
         './commons',
-        './blocklyBlocks',
-        './blocklyGenerators'], function(){
+        './blocks',
+        './javascriptGenerators'], function(){
 
   var generator = {};
 
@@ -24,7 +24,7 @@ define(['blockly.javascript',
 
     Copernicus.activeSensors = [];*/
 
-    var code = "test code";
+    var code = Blockly.JavaScript.workspaceToCode(workspace);
 
     return code;
   };

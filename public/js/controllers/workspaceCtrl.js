@@ -1,8 +1,8 @@
 define(['./module',
         'app.msg',
-        '../toolbox',
-        '../codeGenerator',
-        'blockly',
+        '../blockly/toolbox',
+        '../blockly/codeGenerator',
+        'blockly.inject',
         'jquery.bootstrap'
         ], function (module, msg, toolbox, codeGenerator) {
 
@@ -39,6 +39,7 @@ define(['./module',
       });
 
       this.hiddenSidebar = false;
+      this.isCodeVisible = true;
 
       this.loadProject();
 

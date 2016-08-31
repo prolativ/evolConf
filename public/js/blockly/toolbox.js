@@ -1,4 +1,4 @@
-define(['text!../xml/toolbox.xml!strip',
+define(['text!../../xml/toolbox.xml!strip',
         'app.msg'], function(toolboxXml, msg){
 
   var parser = new DOMParser();

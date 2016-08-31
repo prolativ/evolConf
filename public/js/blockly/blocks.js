@@ -1,24 +1,7 @@
 define(['angular',
         'app.msg',
         './commons',
-        'blockly'], function(ng, msg){
-
-  /*Blockly.Blocks['copernicus_timer_start'] = {
-    init: function() {
-      this.setColour(Copernicus.actionBlocksColour);
-      this.appendDummyInput()
-        .appendField(msg.actionBlockTitles["timerStart"]);
-      this.appendDummyInput()
-        .appendField(new Blockly.FieldDropdown(Copernicus.controllableTimersNames), 'TIMER_NAME');
-      this.setPreviousStatement(true);
-      this.setNextStatement(true);
-      this.setInputsInline(true);
-    },
-
-    getVars: function() {
-      return [this.getFieldValue('TIMER_NAME')];
-    }
-  };*/
+        'blockly.inject'], function(ng, msg){
 
 Blockly.Blocks.maps = {};
 
@@ -37,7 +20,7 @@ Blockly.Blocks['maps_create_empty'] = {
 Blockly.Blocks['maps_create_with'] = {
   init: function() {
     this.setColour(Blockly.Blocks.maps.HUE);
-    this.itemCount_ = 1;
+    this.entry_count = 1;
     this.updateShape_();
     this.setOutput(true, 'Map');
     this.setMutator(new Blockly.Mutator(['maps_create_with_entry']));
@@ -49,7 +32,7 @@ Blockly.Blocks['maps_create_with'] = {
    */
   mutationToDom: function() {
     var container = document.createElement('mutation');
-    container.setAttribute('items', this.itemCount_);
+    container.setAttribute('items', this.entry_count);
     return container;
   },
   /**
@@ -58,7 +41,7 @@ Blockly.Blocks['maps_create_with'] = {
    * @this Blockly.Block
    */
   domToMutation: function(xmlElement) {
-    this.itemCount_ = parseInt(xmlElement.getAttribute('items'), 10);
+    this.entry_count = parseInt(xmlElement.getAttribute('items'), 10);
     this.updateShape_();
   },
   /**
@@ -72,7 +55,7 @@ Blockly.Blocks['maps_create_with'] = {
         Blockly.Block.obtain(workspace, 'maps_create_with_container');
     containerBlock.initSvg();
     var connection = containerBlock.getInput('STACK').connection;
-    for (var i = 0; i < this.itemCount_; i++) {
+    for (var i = 0; i < this.entry_count; i++) {
       var itemBlock = Blockly.Block.obtain(workspace, 'maps_create_with_entry');
       itemBlock.initSvg();
       connection.connect(itemBlock.previousConnection);
@@ -94,12 +77,12 @@ Blockly.Blocks['maps_create_with'] = {
       itemBlock = itemBlock.nextConnection &&
           itemBlock.nextConnection.targetBlock();
     }
-    this.itemCount_ = connections.length;
+    this.entry_count = connections.length;
     this.updateShape_();
     // Reconnect any child blocks.
-    for (var i = 0; i < this.itemCount_; i++) {
+    for (var i = 0; i < this.entry_count; i++) {
       if (connections[i]) {
-        this.getInput('ADD' + i).connection.connect(connections[i]);
+        this.getInput('VALUE' + i).connection.connect(connections[i]);
       }
     }
   },
@@ -112,7 +95,7 @@ Blockly.Blocks['maps_create_with'] = {
     var itemBlock = containerBlock.getInputTargetBlock('STACK');
     var i = 0;
     while (itemBlock) {
-      var input = this.getInput('ADD' + i);
+      var input = this.getInput('VALUE' + i);
       itemBlock.valueConnection_ = input && input.connection.targetConnection;
       i++;
       itemBlock = itemBlock.nextConnection &&
@@ -125,28 +108,38 @@ Blockly.Blocks['maps_create_with'] = {
    * @this Blockly.Block
    */
   updateShape_: function() {
+    //Save keys
+    var keys = [];
+    var i = 0;
+    while (this.getFieldValue('KEY' + i)) {
+      keys.push(this.getFieldValue('KEY' + i));
+      i++;
+    }
+
     // Delete everything.
     if (this.getInput('EMPTY')) {
       this.removeInput('EMPTY');
     } else {
       this.removeInput('NONEMPTY_HEADER');
       var i = 0;
-      while (this.getInput('ADD' + i)) {
-        this.removeInput('ADD' + i);
+      while (this.getInput('VALUE' + i)) {
+        this.removeInput('VALUE' + i);
         i++;
       }
     }
     // Rebuild block.
-    if (this.itemCount_ == 0) {
+    if (this.entry_count == 0) {
       this.appendDummyInput('EMPTY')
           .appendField(msg.mapBlocks.createEmpty);
     } else {
       this.appendDummyInput('NONEMPTY_HEADER').appendField(msg.mapBlocks.createWith);
-      for (var i = 0; i < this.itemCount_; i++) {
-        this.appendValueInput('ADD' + i)
+      for (var i = 0; i < this.entry_count; i++) {
+        this.appendValueInput('VALUE' + i)
           .appendField(msg.mapBlocks.key)
-          .appendField(new Blockly.FieldTextInput(''), 'TEXT')
-          .appendField(msg.mapBlocks.value);
+          .appendField(
+            new Blockly.FieldTextInput(keys[i] || ''),
+            'KEY' + i
+          ).appendField(msg.mapBlocks.value);
       }
     }
   }
@@ -189,22 +182,26 @@ Blockly.Blocks['maps_update'] = ng.copy(Blockly.Blocks['maps_create_with']);
 Blockly.Blocks['maps_update'].init = function() {
   Blockly.Blocks['maps_create_with'].init.apply(this, []);
   this.setOutput(false);
+  this.setPreviousStatement(true);
+  this.setNextStatement(true);
 };
 Blockly.Blocks['maps_update'].updateShape_ = function() {
   // Delete everything.
   this.removeInput('MAP');
   var i = 0;
-  while (this.getInput('ADD' + i)) {
-    this.removeInput('ADD' + i);
+  while (this.getInput('VALUE' + i)) {
+    this.removeInput('VALUE' + i);
     i++;
   }
   // Rebuild block.
   this.appendValueInput('MAP').appendField(msg.mapBlocks.update);
-  for (var i = 0; i < this.itemCount_; i++) {
-    this.appendValueInput('ADD' + i)
+  for (var i = 0; i < this.entry_count; i++) {
+    this.appendValueInput('VALUE' + i)
       .appendField(msg.mapBlocks.key)
-      .appendField(new Blockly.FieldTextInput(''), 'TEXT')
-      .appendField(msg.mapBlocks.value);
+      .appendField(
+        new Blockly.FieldTextInput(this.getFieldValue('KEY' + i) || ''),
+        'KEY' + i
+      ).appendField(msg.mapBlocks.value);
   }
 };
 
