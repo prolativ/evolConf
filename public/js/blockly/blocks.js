@@ -178,32 +178,50 @@ Blockly.Blocks['maps_get'] = {
   }
 };
 
-Blockly.Blocks['maps_update'] = ng.copy(Blockly.Blocks['maps_create_with']);
-Blockly.Blocks['maps_update'].init = function() {
-  Blockly.Blocks['maps_create_with'].init.apply(this, []);
-  this.setOutput(false);
-  this.setPreviousStatement(true);
-  this.setNextStatement(true);
+Blockly.Blocks['maps_update'] = (function(){
+  var Block = ng.copy(Blockly.Blocks['maps_create_with']);
+
+  Block.init = function() {
+    Blockly.Blocks['maps_create_with'].init.apply(this, []);
+    this.setOutput(false);
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+  };
+
+  Block.updateShape_ = function() {
+    // Delete everything.
+    this.removeInput('MAP');
+    var i = 0;
+    while (this.getInput('VALUE' + i)) {
+      this.removeInput('VALUE' + i);
+      i++;
+    }
+    // Rebuild block.
+    this.appendValueInput('MAP').appendField(msg.mapBlocks.update);
+    for (var i = 0; i < this.entry_count; i++) {
+      this.appendValueInput('VALUE' + i)
+        .appendField(msg.mapBlocks.key)
+        .appendField(
+          new Blockly.FieldTextInput(this.getFieldValue('KEY' + i) || ''),
+          'KEY' + i
+        ).appendField(msg.mapBlocks.value);
+    }
+  };
+
+  return Block;
+})();
+
+/*var createFunctionStub = function(name, parameters, returnStub) {
+  var Block = ng.copy(Blockly.Blocks['procedures_defreturn']);
+
+  Block.init
+
+  return Block;
 };
-Blockly.Blocks['maps_update'].updateShape_ = function() {
-  // Delete everything.
-  this.removeInput('MAP');
-  var i = 0;
-  while (this.getInput('VALUE' + i)) {
-    this.removeInput('VALUE' + i);
-    i++;
-  }
-  // Rebuild block.
-  this.appendValueInput('MAP').appendField(msg.mapBlocks.update);
-  for (var i = 0; i < this.entry_count; i++) {
-    this.appendValueInput('VALUE' + i)
-      .appendField(msg.mapBlocks.key)
-      .appendField(
-        new Blockly.FieldTextInput(this.getFieldValue('KEY' + i) || ''),
-        'KEY' + i
-      ).appendField(msg.mapBlocks.value);
-  }
-};
+
+Blockly.Blocks['config_unrenamable_defreturn_test1'] = createFunctionStub("test1", ["foo", "bar"], )*/
+
+//Blockly.Blocks['config_signature']
 
 
 Blockly.Blocks['evolConf'] = {

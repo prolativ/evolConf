@@ -27,6 +27,11 @@
       <div class="workspace-controls">
         <button ng-click="workspaceCtrl.cleanWorkspace()">{{workspaceCtrl.msg.workspace.cleanWorkspace}}</button>
         <button ng-click="workspaceCtrl.toggleCodeVisible()">{{workspaceCtrl.msg.workspace.toggleCode}}</button>
+        <input type="checkbox" ng-model="workspaceCtrl.editionMode"
+          ng-true-value="'template'" ng-false-value="'implementation'"
+          ng-change="workspaceCtrl.reloadBlocks()">
+            Editing template
+        </input>
       </div>
     </section>
   </div>

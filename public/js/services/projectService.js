@@ -9,7 +9,8 @@ define([
       return {
         name: projectName || "",
         settings: {},
-        blocksXml: undefined
+        //functionBlocksXmls: []
+        functionBlocksXmls: [{}] // for exactly 1 config function
       };
     };
 
@@ -36,14 +37,19 @@ define([
       return localStorageService.get("project") || createNewProject();
     };
 
-    this.getProject = function(project){
+    this.getProject = function(){
       return this.project;
     };
 
-    this.setBlocksXml = function(blocksXml){
-      this.project.blocksXml = blocksXml;
+    this.setBlocksXml = function(index, editionMode, blocksXml){
+      console.log(index, editionMode, blocksXml);
+      this.project.functionBlocksXmls[index][editionMode] = blocksXml;
       this.setProject(this.project);
     };
+
+    this.getBlocksXml = function(index, editionMode){
+      return this.project.functionBlocksXmls[index][editionMode];
+    }
 
     this.setProject(this.getLocallyPersistedProject());
   });

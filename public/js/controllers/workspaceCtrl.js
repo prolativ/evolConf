@@ -33,7 +33,8 @@ define(['./module',
 
       this.workspace.addChangeListener(function(){
         var blocksDom = Blockly.Xml.workspaceToDom(self.workspace);
-        projectService.setBlocksXml(Blockly.Xml.domToText(blocksDom));
+        var blocksXml = Blockly.Xml.domToText(blocksDom);
+        projectService.setBlocksXml(0, self.editionMode, blocksXml);
         self.code = self.generateCode();
         updateCodePreview(self.code);
       });
@@ -41,7 +42,9 @@ define(['./module',
       this.hiddenSidebar = false;
       this.isCodeVisible = true;
 
-      this.loadProject();
+      this.editionMode = 'template';
+
+      this.reloadBlocks();
 
       //resize after some time to initialize/position workspace
       function initWorkspacePosition(repetitions){
@@ -56,23 +59,41 @@ define(['./module',
       initWorkspacePosition(10);
   	};
 
-    this.loadProject = function(){
-      var project = projectService.getProject();
-
+    this.loadBlocks = function(index, editionMode){
       this.code = "";
       this.workspace.clear();
       this.workspace.updateToolbox(toolbox);
-
-      if(project.blocksXml){
-        var blocksDom = Blockly.Xml.textToDom(project.blocksXml);
+      var blocksXml = projectService.getBlocksXml(index, editionMode);
+      if(blocksXml){
+        var blocksDom = Blockly.Xml.textToDom(blocksXml);
         Blockly.Xml.domToWorkspace(this.workspace, blocksDom);
       }
 
       this.workspace.fireChangeEvent();
+    }
+
+    this.reloadBlocks = function(){
+      this.loadBlocks(0, this.editionMode);
     };
 
     this.cleanWorkspace = function() {
       this.workspace.clear();
+
+      var editable;
+      var xmlText;
+
+      if(this.editionMode == "template"){
+        editable = true
+        xmlText = '<xml xmlns=\"http://www.w3.org/1999/xhtml\"><block type=\"procedures_defreturn\"><field name=\"NAME\">foo</field></block></xml>';
+      } else if(this.editionMode == "implementation"){
+        editable = false
+        xmlText = projectService.getBlocksXml(0, "template");
+      }
+
+      var dom = Blockly.Xml.textToDom(xmlText);
+      var block = Blockly.Xml.domToBlock(this.workspace, dom.childNodes[0]);
+      //block.setEditable(editable);
+      block.setDeletable(false);
     };
 
     this.generateCode = function(){
@@ -81,7 +102,7 @@ define(['./module',
 
     var self = this;
     $scope.$on("projectLoaded", function(){
-      self.loadProject();
+      self.reloadBlocks();
     })
 
     this.init();

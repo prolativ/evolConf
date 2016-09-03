@@ -39,6 +39,7 @@
   <category name="math">
     <block type="math_number"></block>
     <block type="math_arithmetic"></block>
+    <block type="math_arithmetic"></block>
     <block type="math_single"></block>
     <block type="math_trig"></block>
     <block type="math_constant"></block>
@@ -84,4 +85,13 @@
 
   <category name="variables" custom="VARIABLE"></category>
   <category name="functions" custom="PROCEDURE"></category>
+
+  <category name="config">
+    <block type="config_signature"></block>
+
+    <block type="maps_create_with" x="79" y="56">
+      <mutation items="2"></mutation><field name="KEY0">a</field><field name="KEY1">b</field><value name="VALUE0"><block type="text"><field name="TEXT">scdc</field></block></value><value name="VALUE1"><block type="text"><field name="TEXT">dcdsc</field></block></value>
+    </block>
+
+  </category>
 </xml>
