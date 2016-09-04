@@ -12,6 +12,22 @@ define(['./module',
       ['$scope', '$http', 'projectService',
       function ($scope, $http, projectService) {
 
+    var self = this;
+
+    function updateCodePreview(code){
+      $("#generated-code")
+        .empty()
+        .append(code);
+    }
+
+    var onWorkspaceChange = function(){
+      var blocksDom = Blockly.Xml.workspaceToDom(self.workspace);
+      var blocksXml = Blockly.Xml.domToText(blocksDom);
+      projectService.setBlocksXml(0, self.editionMode, blocksXml);
+      self.code = self.generateCode();
+      updateCodePreview(self.code);
+    }
+
     this.init = function(){
       this.msg = msg;
 
@@ -22,22 +38,9 @@ define(['./module',
 
       $('#blockly-div').trigger('resize');
 
-      function updateCodePreview(code){
-        $("#generated-code")
-          .empty()
-          .append(code);
-      }
-
-
       var self = this;
 
-      this.workspace.addChangeListener(function(){
-        var blocksDom = Blockly.Xml.workspaceToDom(self.workspace);
-        var blocksXml = Blockly.Xml.domToText(blocksDom);
-        projectService.setBlocksXml(0, self.editionMode, blocksXml);
-        self.code = self.generateCode();
-        updateCodePreview(self.code);
-      });
+      this.workspace.addChangeListener(this.onWorkspaceChange);
 
       this.hiddenSidebar = false;
       this.isCodeVisible = true;
@@ -49,7 +52,7 @@ define(['./module',
       //resize after some time to initialize/position workspace
       function initWorkspacePosition(repetitions){
         if(repetitions > 0){
-          Blockly.fireUiEvent(window, 'resize');
+          Blockly.svgResize(self.workspace);
           setTimeout(function(){
             initWorkspacePosition(repetitions - 1);
           }, 200);
@@ -66,10 +69,10 @@ define(['./module',
       var blocksXml = projectService.getBlocksXml(index, editionMode);
       if(blocksXml){
         var blocksDom = Blockly.Xml.textToDom(blocksXml);
-        Blockly.Xml.domToWorkspace(this.workspace, blocksDom);
+        Blockly.Xml.domToWorkspace(blocksDom, this.workspace);
       }
 
-      this.workspace.fireChangeEvent();
+      onWorkspaceChange();
     }
 
     this.reloadBlocks = function(){
@@ -91,8 +94,8 @@ define(['./module',
       }
 
       var dom = Blockly.Xml.textToDom(xmlText);
-      var block = Blockly.Xml.domToBlock(this.workspace, dom.childNodes[0]);
-      //block.setEditable(editable);
+      var block = Blockly.Xml.domToBlock(dom.childNodes[0], this.workspace);
+      block.setEditable(editable);
       block.setDeletable(false);
     };
 
@@ -100,7 +103,16 @@ define(['./module',
       return codeGenerator.generateCode(this.workspace);
     };
 
-    var self = this;
+    this.toggleCodeVisible = function() {
+      this.isCodeVisible = !this.isCodeVisible;
+      if (this.isCodeVisible) {
+        $("#blockly-area").width("60%");
+      } else {
+        $("#blockly-area").width("97%");
+      }
+      Blockly.svgResize(self.workspace);
+    };
+
     $scope.$on("projectLoaded", function(){
       self.reloadBlocks();
     })
