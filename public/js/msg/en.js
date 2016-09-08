@@ -32,10 +32,10 @@ define(function(){
     },
 
     project: {
-      about: "About IoBlocks",
-      create: "New project",
       name: "Project's name:",
-      open: "Open project",
+      newTemplate: "New template",
+      implementTemplate: "Configuration from template",
+      openProject: "Open project",
       save: "Save project",
       title: "Project"
     },

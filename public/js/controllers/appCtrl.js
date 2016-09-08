@@ -34,39 +34,40 @@ define(['./module',
 
     this.msg = msg;
 
-    this.openNewProjectModal = function(){
+    this.newTemplateAction = function(){
       var modalInstance = openTextInputModal(msg.project.create, msg.project.name, "");
 
       var self = this;
       modalInstance.result.then(function (text) {
-        projectService.setNewProject(text);
+        projectService.setNewProject(text, 'template');
         $rootScope.$broadcast('projectLoaded');
       });
     };
 
-    this.openOpeningProjectModal = function(){
-      $('#file-input').val("");
-      $('#file-input').click();
+    this.openProjectAction = function(){
+      this.openFileChooser('file-input-open-project');
     };
 
-    this.openProjectFromJson = function(projectJson){
-      projectService.setProjectFromJson(projectJson);
-      $rootScope.$broadcast('projectLoaded');
+    this.implementTemplateAction = function(){
+      this.openFileChooser('file-input-implement-template');
     };
 
-    this.openAboutProgramModal = function() {
-      var modalInstance = $uibModal.open({
-        animation: true,
-        templateUrl: '/html/aboutProgramModal.html',
-        controller: 'AboutProgramCtrl',
-        controllerAs: 'modalCtrl',
-        resolve: {
-          title: function() { return "About project" },
-        }
-      });
-    }
 
-    this.openSavingProjectModal = function(){
+    this.openFileChooser = function(id){
+      $('#' + id).val("");
+      $('#' + id).click();
+    };
+
+    this.handleOpenFile = function(fileContent, action){
+      var project = projectService.handleProjectJson(fileContent, action);
+      if(project){
+        $rootScope.$broadcast('projectLoaded');
+      } else {
+        alert("Project not loaded successfully.");
+      }
+    };
+
+    this.saveProjectAction = function(){
       var project = projectService.getProject();
       var modalInstance = openTextInputModal(msg.project.save, msg.project.name, projectService.getProject().name)
 

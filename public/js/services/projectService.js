@@ -5,17 +5,18 @@ define([
   'use strict';
 
   module.service('projectService', function(localStorageService){
-    var createNewProject = function(projectName){
+    var createNewProject = function(projectName, projectType){
       return {
         name: projectName || "",
+        projectType: projectType,
         settings: {},
         //functionBlocksXmls: []
-        functionBlocksXmls: [{}] // for exactly 1 config function
+        functionBlocksXmls: [{}] // mock for exactly 1 config function
       };
     };
 
-    this.setNewProject = function(projectName){
-      var project = createNewProject(projectName);
+    this.setNewProject = function(projectName, projectType){
+      var project = createNewProject(projectName, projectType);
       this.setProject(project);
     };
 
@@ -24,17 +25,52 @@ define([
       localStorageService.set("project", this.getProject());
     };
 
-    this.setProjectFromJson = function(projectJson){
+    this.handleProjectJson = function(projectJson, action){
+      var status = 'unknown action';
+      var project;
+
+      console.log("handling", action);
+
       try{
-        var project = JSON.parse(projectJson);
-        this.project = project;
-      }catch(err){
-        console.log("Could not load project from JSON: " + err);
+        project = JSON.parse(projectJson);
+
+        switch(action){
+          case 'openProject':
+            if(
+              (project.projectType == 'template' || project.projectType == 'implementation') &&
+              typeof project.functionBlocksXmls == 'object'
+            ){
+              status = 'OK';
+            } else {
+              status = 'cannot open project';
+            }
+            break;
+
+          case 'implementTemplate':
+            if(project.projectType == 'template'){
+              project.projectType = 'implementation';
+              status = 'OK';
+            } else {
+              status = 'cannot open template to implement';
+            }
+            break;
+        }
+
+        if(status == 'OK'){
+          this.project = project;
+        } else {
+          throw "Project error: " + status;
+        }
+      } catch(err) {
+        console.log("Could open project file: " + err);
+        project = undefined;
+      } finally {
+        return project;
       }
     };
 
     this.getLocallyPersistedProject = function(){
-      return localStorageService.get("project") || createNewProject();
+      return localStorageService.get("project") || createNewProject("", "template");
     };
 
     this.getProject = function(){
@@ -49,6 +85,10 @@ define([
 
     this.getBlocksXml = function(index, editionMode){
       return this.project.functionBlocksXmls[index][editionMode];
+    }
+
+    this.getProjectType = function(){
+      return this.project.projectType;
     }
 
     this.setProject(this.getLocallyPersistedProject());

@@ -1,11 +1,11 @@
 define(['./module'], function(module){
 
-  module.directive('iobFileLoaded', function ($parse) {
+  module.directive('cfgFileLoaded', function ($parse) {
     return {
       restrict: 'A',
       scope: false,
       link: function(scope, element, attrs) {
-        var fn = $parse(attrs.iobFileLoaded);
+        var fn = $parse(attrs.cfgFileLoaded);
               
         element.on('change', function(onChangeEvent) {
           var reader = new FileReader();

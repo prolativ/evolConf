@@ -32,10 +32,10 @@ define(function(){
     },
 
     project: {
-      about: "O IoBlocks",
-      create: "Nowy projekt",
       name: "Nazwa projektu:",
-      open: "Otwórz projekt",
+      newTemplate: "New wzorzec",
+      newImplementation: "Konfiguracja ze wzorca",
+      openProject: "Otwórz projekt",
       save: "Zapisz projekt",
       title: "Projekt"
     },

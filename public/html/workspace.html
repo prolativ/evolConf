@@ -6,10 +6,15 @@
       </div>
       <ul class="sidebar-menu">
         <li class="header">{{appCtrl.msg.project.title}}</li>
-        <li><a ng-click="appCtrl.openNewProjectModal()">{{appCtrl.msg.project.create}}<i class="fa fa-file pull-right"></i></a></li>
-        <li><a ng-click="appCtrl.openOpeningProjectModal()">{{appCtrl.msg.project.open}}<i class="fa fa-upload pull-right"></i></a></li>
-        <li><a ng-click="appCtrl.openSavingProjectModal()">{{appCtrl.msg.project.save}}<i class="fa fa-download pull-right"></i></a></li>
-        <input id="file-input" type="file" ng-show="false" iob-file-loaded="appCtrl.openProjectFromJson($fileContent)"/>
+        <li><a ng-click="appCtrl.newTemplateAction()">{{appCtrl.msg.project.newTemplate}}<i class="fa fa-file pull-right"></i></a></li>
+        <li><a ng-click="appCtrl.implementTemplateAction()">{{appCtrl.msg.project.implementTemplate}}<i class="fa fa-file pull-right"></i></a></li>
+        <li><a ng-click="appCtrl.openProjectAction()">{{appCtrl.msg.project.openProject}}<i class="fa fa-upload pull-right"></i></a></li>
+        <li><a ng-click="appCtrl.saveProjectAction()">{{appCtrl.msg.project.save}}<i class="fa fa-download pull-right"></i></a></li>
+        
+        <input id="file-input-open-project" type="file" ng-show="false"
+          cfg-file-loaded="appCtrl.handleOpenFile($fileContent, 'openProject')"/>
+        <input id="file-input-implement-template" type="file" ng-show="false"
+          cfg-file-loaded="appCtrl.handleOpenFile($fileContent, 'implementTemplate')"/>
       </ul>
     </section>
   </aside>
@@ -29,7 +34,7 @@
         <button ng-click="workspaceCtrl.toggleCodeVisible()">{{workspaceCtrl.msg.workspace.toggleCode}}</button>
         <input type="checkbox" ng-model="workspaceCtrl.editionMode"
           ng-true-value="'template'" ng-false-value="'implementation'"
-          ng-change="workspaceCtrl.reloadBlocks()">
+          ng-change="workspaceCtrl.reloadBlocks()" ng-disabled="true">
             Editing template
         </input>
       </div>

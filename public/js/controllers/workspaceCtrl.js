@@ -40,12 +40,12 @@ define(['./module',
 
       var self = this;
 
-      this.workspace.addChangeListener(this.onWorkspaceChange);
+      this.workspace.addChangeListener(onWorkspaceChange);
 
       this.hiddenSidebar = false;
       this.isCodeVisible = true;
 
-      this.editionMode = 'template';
+      this.editionMode = projectService.getProjectType();
 
       this.reloadBlocks();
 
@@ -87,7 +87,7 @@ define(['./module',
 
       if(this.editionMode == "template"){
         editable = true
-        xmlText = '<xml xmlns=\"http://www.w3.org/1999/xhtml\"><block type=\"procedures_defreturn\"><field name=\"NAME\">foo</field></block></xml>';
+        xmlText = '<xml xmlns=\"http://www.w3.org/1999/xhtml\"><block type=\"procedures_defreturn\"><field name=\"NAME\">config_function</field></block></xml>';
       } else if(this.editionMode == "implementation"){
         editable = false
         xmlText = projectService.getBlocksXml(0, "template");
@@ -114,6 +114,7 @@ define(['./module',
     };
 
     $scope.$on("projectLoaded", function(){
+      self.editionMode = projectService.getProjectType();
       self.reloadBlocks();
     })
 
