@@ -10,6 +10,7 @@
         <li><a ng-click="appCtrl.implementTemplateAction()">{{appCtrl.msg.project.implementTemplate}}<i class="fa fa-file pull-right"></i></a></li>
         <li><a ng-click="appCtrl.openProjectAction()">{{appCtrl.msg.project.openProject}}<i class="fa fa-upload pull-right"></i></a></li>
         <li><a ng-click="appCtrl.saveProjectAction()">{{appCtrl.msg.project.save}}<i class="fa fa-download pull-right"></i></a></li>
+        <li><a ng-click="appCtrl.generateFilesAction()">{{appCtrl.msg.project.generateConfig}}<i class="fa fa-download pull-right"></i></a></li>
         
         <input id="file-input-open-project" type="file" ng-show="false"
           cfg-file-loaded="appCtrl.handleOpenFile($fileContent, 'openProject')"/>
@@ -26,10 +27,14 @@
           <li ng-repeat="configName in workspaceCtrl.configNames">
             <div>
               <span ng-click="workspaceCtrl.selectConfig(configName)">{{configName}}</span>
-              <button ng-click="workspaceCtrl.removeConfig(configName)">X</button>
+              <button ng-show="workspaceCtrl.configsEditable()" ng-click="workspaceCtrl.removeConfig(configName)">X</button>
             </div>
           </li>
-          <li><div><button ng-click="appCtrl.addConfigAction()">+</button></div></li>
+          <li ng-show="workspaceCtrl.configsEditable()">
+            <div>
+              <button ng-click="appCtrl.addConfigAction()">+ {{workspaceCtrl.msg.config.new}}</button>
+            </div>
+          </li>
         </ul>
       </div>
       <div class="blocks-and-code">
@@ -43,12 +48,6 @@
       <div class="workspace-controls">
         <button ng-click="workspaceCtrl.cleanWorkspace()">{{workspaceCtrl.msg.workspace.cleanWorkspace}}</button>
         <button ng-click="workspaceCtrl.toggleCodeVisible()">{{workspaceCtrl.msg.workspace.toggleCode}}</button>
-        <input type="checkbox" ng-model="workspaceCtrl.workspace.editionMode"
-          ng-true-value="'template'" ng-false-value="'implementation'"
-          ng-change="workspaceCtrl.reloadBlocks()" ng-disabled="true">
-            Editing template
-        </input>
-        {{workspaceCtrl.configName}}
       </div>
     </section>
   </div>

@@ -152,4 +152,49 @@
     Blockly.ContextMenu.currentBlock = this;
   };
 
+  ///////////////////////////////////////////////////////
+
+    /**
+   * Show or hide the comment bubble.
+   * @param {boolean} visible True if the bubble should be visible.
+   */
+  Blockly.Comment.prototype.setVisible = function(visible) {
+    if (visible == this.isVisible()) {
+      // No change.
+      return;
+    }
+    Blockly.Events.fire(
+        new Blockly.Events.Ui(this.block_, 'commentOpen', !visible, visible));
+    if (!this.textarea_ || goog.userAgent.IE) {
+      // Steal the code from warnings to make an uneditable text bubble.
+      // MSIE does not support foreignobject; textareas are impossible.
+      // http://msdn.microsoft.com/en-us/library/hh834675%28v=vs.85%29.aspx
+      // Always treat comments in IE as uneditable.
+      Blockly.Warning.prototype.setVisible.call(this, visible);
+      return;
+    }
+    // Save the bubble stats before the visibility switch.
+    var text = this.getText();
+    var size = this.getBubbleSize();
+    if (visible) {
+      // Create the bubble.
+      this.bubble_ = new Blockly.Bubble(
+          /** @type {!Blockly.WorkspaceSvg} */ (this.block_.workspace),
+          this.createEditor_(), this.block_.svgPath_,
+          this.iconXY_, this.width_, this.height_);
+      this.bubble_.registerResizeEvent(this.resizeBubble_.bind(this));
+      this.updateColour();
+    } else {
+      // Dispose of the bubble.
+      this.bubble_.dispose();
+      this.bubble_ = null;
+      this.textarea_ = null;
+      this.foreignObject_ = null;
+    }
+    // Restore the bubble stats after the visibility switch.
+    this.setText(text);
+    this.setBubbleSize(size.width, size.height);
+  };
+
+
 })();

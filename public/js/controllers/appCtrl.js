@@ -68,7 +68,7 @@ define(['./module',
     this.handleOpenFile = function(fileContent, action){
       var project = projectService.handleProjectJson(fileContent, action);
       if(project){
-        $rootScope.$broadcast('projectLoaded');
+        $rootScope.$broadcast('projectLoaded', action);
       } else {
         alert("Project not loaded successfully.");
       }

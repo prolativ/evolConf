@@ -88,6 +88,9 @@ define([
 
     this.getBlocksXml = function(configName, editionMode){
       var configs = this.project.configs;
+      if(editionMode == 'implementation' && !(editionMode in configs[configName])){
+        editionMode = 'template';
+      }
       return configs[configName] && configs[configName][editionMode];
     };
 

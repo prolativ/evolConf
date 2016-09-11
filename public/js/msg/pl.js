@@ -2,14 +2,13 @@ define(function(){
   var pl = {
     config: {
       fileName: "Nazwa pliku",
-      name: "Nazwa konfiguracji"
+      name: "Nazwa konfiguracji",
+      new: "Nowa konfiguracja"
     },
 
     categories: {
-      actions: "Akcje",
       control: "Kontrola",
       functions: "Funkcje",
-      general: "Ogólne",
       lists: "Listy",
       logic: "Logika",
       math: "Matematyka",
@@ -37,6 +36,7 @@ define(function(){
     },
 
     project: {
+      generateConfig: "Generuj pliki",
       name: "Nazwa projektu:",
       newTemplate: "New wzorzec",
       newImplementation: "Konfiguracja ze wzorca",

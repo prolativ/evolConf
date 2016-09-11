@@ -2,14 +2,13 @@ define(function(){
   var en = {
     config: {
       fileName: "File's name",
-      name: "Configuration's name"
+      name: "Configuration's name",
+      new: "New configuration"
     },
 
     categories: {
-      actions: "Actions",
       control: "Control",
       functions: "Functions",
-      general: "General",
       lists: "Lists",
       logic: "Logic",
       math: "Math",
@@ -37,6 +36,7 @@ define(function(){
     },
 
     project: {
+      generateConfig: "Generate files",
       name: "Project's name:",
       newTemplate: "New template",
       implementTemplate: "Configuration from template",
