@@ -23,7 +23,7 @@ define(['./module',
     var onWorkspaceChange = function(){
       var blocksDom = Blockly.Xml.workspaceToDom(self.workspace);
       var blocksXml = Blockly.Xml.domToText(blocksDom);
-      projectService.setBlocksXml(0, self.editionMode, blocksXml);
+      projectService.setBlocksXml(self.configName, self.workspace.editionMode, blocksXml);
       self.code = self.generateCode();
       updateCodePreview(self.code);
     }
@@ -38,14 +38,14 @@ define(['./module',
 
       $('#blockly-div').trigger('resize');
 
-      var self = this;
-
       this.workspace.addChangeListener(onWorkspaceChange);
 
       this.hiddenSidebar = false;
       this.isCodeVisible = true;
 
-      this.editionMode = projectService.getProjectType();
+      this.workspace.editionMode = projectService.getProjectType();
+      this.configNames = projectService.getConfigNames();
+      this.configName = this.configNames[0];
 
       this.reloadBlocks();
 
@@ -62,11 +62,11 @@ define(['./module',
       initWorkspacePosition(10);
   	};
 
-    this.loadBlocks = function(index, editionMode){
+    this.loadBlocks = function(configName, editionMode){
       this.code = "";
       this.workspace.clear();
       this.workspace.updateToolbox(toolbox);
-      var blocksXml = projectService.getBlocksXml(index, editionMode);
+      var blocksXml = projectService.getBlocksXml(configName, editionMode);
       if(blocksXml){
         var blocksDom = Blockly.Xml.textToDom(blocksXml);
         Blockly.Xml.domToWorkspace(blocksDom, this.workspace);
@@ -76,7 +76,7 @@ define(['./module',
     }
 
     this.reloadBlocks = function(){
-      this.loadBlocks(0, this.editionMode);
+      this.loadBlocks(this.configName, this.workspace.editionMode);
     };
 
     this.cleanWorkspace = function() {
@@ -85,10 +85,10 @@ define(['./module',
       var editable;
       var xmlText;
 
-      if(this.editionMode == "template"){
+      if(this.workspace.editionMode == "template"){
         editable = true
         xmlText = '<xml xmlns=\"http://www.w3.org/1999/xhtml\"><block type=\"procedures_defreturn\"><field name=\"NAME\">config_function</field></block></xml>';
-      } else if(this.editionMode == "implementation"){
+      } else if(this.workspace.editionMode == "implementation"){
         editable = false
         xmlText = projectService.getBlocksXml(0, "template");
       }
@@ -110,11 +110,33 @@ define(['./module',
       } else {
         $("#blockly-area").width("97%");
       }
-      Blockly.svgResize(self.workspace);
+      Blockly.svgResize(this.workspace);
+    };
+
+    this.removeConfig = function(configName){
+      projectService.removeConfig(configName);
+      this.configNames = projectService.getConfigNames();
+      if(this.configNames.indexOf(this.configName) < 0){
+        this.configName = this.configNames[0];
+        this.reloadBlocks();
+      }
+    };
+
+    this.selectConfig = function(configName){
+      this.configName = configName;
+      this.loadBlocks(configName, this.workspace.editionMode);
     };
 
     $scope.$on("projectLoaded", function(){
-      self.editionMode = projectService.getProjectType();
+      self.workspace.editionMode = projectService.getProjectType();
+      self.configNames = projectService.getConfigNames();
+      self.configName = self.configNames[0];
+      self.reloadBlocks();
+    })
+
+    $scope.$on("configAdded", function(event, configName){
+      self.configNames = projectService.getConfigNames();
+      self.configName = configName;
       self.reloadBlocks();
     })
 

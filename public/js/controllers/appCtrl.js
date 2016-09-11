@@ -18,7 +18,7 @@ define(['./module',
       document.body.removeChild(element);
     }
 
-    function openTextInputModal(title, prompt, initialText){
+    function openTextInputModal(title, inputs){
       return $uibModal.open({
         animation: true,
         templateUrl: '/html/textInputModal.html',
@@ -26,8 +26,7 @@ define(['./module',
         controllerAs: 'modalCtrl',
         resolve: {
           title: function(){return title;},
-          prompt: function(){return prompt;},
-          initialText: function(){return initialText;}
+          inputs: function(){return inputs;}
         }
       });
     }
@@ -35,11 +34,20 @@ define(['./module',
     this.msg = msg;
 
     this.newTemplateAction = function(){
-      var modalInstance = openTextInputModal(msg.project.create, msg.project.name, "");
+      var modalInstance = openTextInputModal(msg.project.create, [
+        {
+          key: "projectName",
+          prompt: msg.project.name,
+          initialText: ""
+        }
+      ]);
 
       var self = this;
-      modalInstance.result.then(function (text) {
-        projectService.setNewProject(text, 'template');
+      modalInstance.result.then(function (inputs) {
+        var nameInput = inputs.find(function(element){
+          return element.key == 'projectName';
+        });
+        projectService.setNewProject(nameInput.text, 'template');
         $rootScope.$broadcast('projectLoaded');
       });
     };
@@ -51,7 +59,6 @@ define(['./module',
     this.implementTemplateAction = function(){
       this.openFileChooser('file-input-implement-template');
     };
-
 
     this.openFileChooser = function(id){
       $('#' + id).val("");
@@ -69,12 +76,48 @@ define(['./module',
 
     this.saveProjectAction = function(){
       var project = projectService.getProject();
-      var modalInstance = openTextInputModal(msg.project.save, msg.project.name, projectService.getProject().name)
+      var modalInstance = openTextInputModal(msg.project.save, [
+        {
+          key: "projectName",
+          prompt: msg.project.name,
+          initialText: projectService.getProjectName()
+        }
+      ]);
 
-      modalInstance.result.then(function (text) {
+      modalInstance.result.then(function (inputs) {
+        var nameInput = inputs.find(function(element){
+          return element.key == 'projectName';
+        });
         var persistableProject = projectService.getProject();
-        persistableProject.name = text;
-        downloadTextFile(text + ".json", JSON.stringify(persistableProject));
+        persistableProject.name = nameInput.text;
+        downloadTextFile(nameInput.text + ".json", JSON.stringify(persistableProject));
+      });
+    };
+
+    this.addConfigAction = function(){
+      var modalInstance = openTextInputModal(msg.project.save, [
+        {
+          key: "configName",
+          prompt: msg.config.name,
+          initialText: ""
+        },
+        {
+          key: "fileName",
+          prompt: msg.config.fileName,
+          initialText: ""
+        },
+      ]);
+
+      modalInstance.result.then(function (inputs) {
+        var configNameInput = inputs.find(function(element){
+          return element.key == 'configName';
+        });
+        var fileNameInput = inputs.find(function(element){
+          return element.key == 'fileName';
+        });
+
+        projectService.addConfig(configNameInput.text, fileNameInput.text);
+        $rootScope.$broadcast('configAdded', configNameInput.text);
       });
     };
 

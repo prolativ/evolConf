@@ -7,7 +7,20 @@
   width: 100%;
   display:inline-block;
   vertical-align:top;
-  height: 90vh;
+  height: 85vh;
+}
+
+#configs-list{
+  overflow: auto;
+  overflow-y: hidden;
+}
+
+#configs-list li{
+  display: inline-block;
+}
+
+#configs-list div{
+  display: inline-block;
 }
 
 #blockly-area{
@@ -24,11 +37,12 @@
 
 #code-preview{
   display:inline-block;
-  width: 40%;
+  width: 38%;
   height: 100%;
   min-height: 100%;
   overflow: auto;
 }
+
 .workspace-controls{
   display:inline-block;
 }

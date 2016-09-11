@@ -21,6 +21,17 @@
 
   <div class="content-wrapper">
     <section class="content">
+      <div class="configs-bar">
+        <ul id="configs-list">
+          <li ng-repeat="configName in workspaceCtrl.configNames">
+            <div>
+              <span ng-click="workspaceCtrl.selectConfig(configName)">{{configName}}</span>
+              <button ng-click="workspaceCtrl.removeConfig(configName)">X</button>
+            </div>
+          </li>
+          <li><div><button ng-click="appCtrl.addConfigAction()">+</button></div></li>
+        </ul>
+      </div>
       <div class="blocks-and-code">
         <div id="blockly-area">
           <div id="blockly-div"></div>
@@ -32,11 +43,12 @@
       <div class="workspace-controls">
         <button ng-click="workspaceCtrl.cleanWorkspace()">{{workspaceCtrl.msg.workspace.cleanWorkspace}}</button>
         <button ng-click="workspaceCtrl.toggleCodeVisible()">{{workspaceCtrl.msg.workspace.toggleCode}}</button>
-        <input type="checkbox" ng-model="workspaceCtrl.editionMode"
+        <input type="checkbox" ng-model="workspaceCtrl.workspace.editionMode"
           ng-true-value="'template'" ng-false-value="'implementation'"
           ng-change="workspaceCtrl.reloadBlocks()" ng-disabled="true">
             Editing template
         </input>
+        {{workspaceCtrl.configName}}
       </div>
     </section>
   </div>

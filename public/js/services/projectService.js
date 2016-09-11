@@ -10,8 +10,7 @@ define([
         name: projectName || "",
         projectType: projectType,
         settings: {},
-        //functionBlocksXmls: []
-        functionBlocksXmls: [{}] // mock for exactly 1 config function
+        configs: {}
       };
     };
 
@@ -29,8 +28,6 @@ define([
       var status = 'unknown action';
       var project;
 
-      console.log("handling", action);
-
       try{
         project = JSON.parse(projectJson);
 
@@ -38,7 +35,7 @@ define([
           case 'openProject':
             if(
               (project.projectType == 'template' || project.projectType == 'implementation') &&
-              typeof project.functionBlocksXmls == 'object'
+              typeof project.configs == 'object'
             ){
               status = 'OK';
             } else {
@@ -77,19 +74,51 @@ define([
       return this.project;
     };
 
-    this.setBlocksXml = function(index, editionMode, blocksXml){
-      console.log(index, editionMode, blocksXml);
-      this.project.functionBlocksXmls[index][editionMode] = blocksXml;
-      this.setProject(this.project);
+    this.getProjectName = function(){
+      return this.project.name;
+    }
+
+    this.setBlocksXml = function(configName, editionMode, blocksXml){
+      var configs = this.project.configs;
+      if(configs[configName]){
+        configs[configName][editionMode] = blocksXml;
+        this.setProject(this.project);
+      }
     };
 
-    this.getBlocksXml = function(index, editionMode){
-      return this.project.functionBlocksXmls[index][editionMode];
-    }
+    this.getBlocksXml = function(configName, editionMode){
+      var configs = this.project.configs;
+      return configs[configName] && configs[configName][editionMode];
+    };
 
     this.getProjectType = function(){
       return this.project.projectType;
-    }
+    };
+
+    this.getConfigNames = function(){
+      var names = [];
+      for(var key in this.project.configs){
+        names.push(key);
+      }
+      names.sort();
+      return names;
+    };
+
+    this.addConfig = function(configName, fileName){
+      var config = {
+        fileName: fileName
+      };
+      if(!(configName in this.project.configs)){
+        this.project.configs[configName] = config;
+      }
+      this.setProject(this.project);
+    };
+
+    this.removeConfig = function(configName){
+      delete this.project.configs[configName];
+      this.setProject(this.project);
+    };
+
 
     this.setProject(this.getLocallyPersistedProject());
   });

@@ -1,5 +1,10 @@
 define(function(){
   var en = {
+    config: {
+      fileName: "File's name",
+      name: "Configuration's name"
+    },
+
     categories: {
       actions: "Actions",
       control: "Control",

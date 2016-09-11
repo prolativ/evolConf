@@ -3,8 +3,10 @@
     <h3 class="modal-title">{{modalCtrl.title}}</h3>
   </div>
   <div class="modal-body">
-    {{modalCtrl.prompt}}
-    <input type=text ng-model="modalCtrl.text"></input>
+    <div ng-repeat="input in modalCtrl.inputs">
+      {{input.prompt}}
+      <input type=text ng-model="input.text"></input>
+    </div>
   </div>
   <div class="modal-footer">
     <button class="btn btn-primary" type="button" ng-click="modalCtrl.accept()">{{modalCtrl.msg.modal.ok}}</button>

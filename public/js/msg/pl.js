@@ -1,5 +1,10 @@
 define(function(){
   var pl = {
+    config: {
+      fileName: "Nazwa pliku",
+      name: "Nazwa konfiguracji"
+    },
+
     categories: {
       actions: "Akcje",
       control: "Kontrola",

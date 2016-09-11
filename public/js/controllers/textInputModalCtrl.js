@@ -4,14 +4,18 @@ define(['./module',
 
   'use strict';
 
-  module.controller('TextInputModalCtrl', function ($uibModalInstance, title, prompt, initialText) {
+  module.controller('TextInputModalCtrl', function ($uibModalInstance, title, inputs) {
     this.msg = msg;
     this.title = title;
-    this.prompt = prompt;
-    this.text = initialText || "";
+    this.inputs = inputs || {};
+
+    for(var i=0; i<this.inputs.length; ++i){
+      var input = this.inputs[i];
+      input.text = input.initialText || ""; 
+    };
 
     this.accept = function () {
-      $uibModalInstance.close(this.text);
+      $uibModalInstance.close(this.inputs);
     };
 
     this.cancel = function () {
