@@ -22,7 +22,7 @@ define([
 
   app.config(function (localStorageServiceProvider) {
     localStorageServiceProvider
-      .setPrefix('IoBlocks');
+      .setPrefix('simulConf');
   });
 
   return app;

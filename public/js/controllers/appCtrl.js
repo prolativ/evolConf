@@ -94,6 +94,10 @@ define(['./module',
       });
     };
 
+    this.generateConfigFilesAction = function(){
+      $rootScope.$broadcast('downloadConfigFiles', downloadTextFile);
+    };
+
     this.addConfigAction = function(){
       var modalInstance = openTextInputModal(msg.project.save, [
         {

@@ -135,19 +135,37 @@ define(['./module',
       return this.workspace.editionMode == 'template';
     };
 
+    this.canDownloadConfigs = function(){
+      return this.workspace.editionMode == 'implementation';
+    };
+
     $scope.$on("projectLoaded", function(event, action){
       self.workspace.editionMode = projectService.getProjectType();
       self.configNames = projectService.getConfigNames();
       self.configName = self.configNames[0];
       var implementingTemplate = action == "implementTemplate";
       self.reloadBlocks(implementingTemplate);
-    })
+    });
 
     $scope.$on("configAdded", function(event, configName){
       self.configNames = projectService.getConfigNames();
       self.configName = configName;
       self.reloadBlocks();
-    })
+    });
+
+    $scope.$on("downloadConfigFiles", function(event, downloadingFun){
+      for(var i=0; i<self.configNames.length; ++i){
+        var workspace = new Blockly.Workspace(); 
+        var configName = self.configNames[i];
+        var configFileName = projectService.getConfigFileName(configName);
+        var xml = projectService.getBlocksXml(configName, "implementation");
+        var dom = Blockly.Xml.textToDom(xml);
+        Blockly.Xml.domToWorkspace(dom, workspace);
+        var code = Blockly.JavaScript.workspaceToCode(workspace)
+        downloadingFun(configFileName, code);
+      }
+    });
+
 
     this.init();
   }]);

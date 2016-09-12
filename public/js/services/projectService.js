@@ -79,19 +79,23 @@ define([
     }
 
     this.setBlocksXml = function(configName, editionMode, blocksXml){
-      var configs = this.project.configs;
-      if(configs[configName]){
-        configs[configName][editionMode] = blocksXml;
-        this.setProject(this.project);
+      if(configName && editionMode && blocksXml){
+        var configs = this.project.configs;
+        if(configs[configName]){
+          configs[configName][editionMode] = blocksXml;
+          this.setProject(this.project);
+        }
       }
     };
 
     this.getBlocksXml = function(configName, editionMode){
-      var configs = this.project.configs;
-      if(editionMode == 'implementation' && !(editionMode in configs[configName])){
-        editionMode = 'template';
+      if(configName && editionMode){
+        var configs = this.project.configs;
+        if(editionMode == 'implementation' && !(editionMode in configs[configName])){
+          editionMode = 'template';
+        }
+        return configs[configName] && configs[configName][editionMode];
       }
-      return configs[configName] && configs[configName][editionMode];
     };
 
     this.getProjectType = function(){
@@ -121,6 +125,11 @@ define([
       delete this.project.configs[configName];
       this.setProject(this.project);
     };
+
+    this.getConfigFileName = function(configName){
+      var configs = this.project.configs;
+      return configs[configName] && configs[configName].fileName
+    }
 
 
     this.setProject(this.getLocallyPersistedProject());
