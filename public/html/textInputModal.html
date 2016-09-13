@@ -4,8 +4,11 @@
   </div>
   <div class="modal-body">
     <div ng-repeat="input in modalCtrl.inputs">
-      {{input.prompt}}
-      <input type=text ng-model="input.text"></input>
+      <div class="form-group">
+        {{input.prompt}}
+      </div>
+      <input class="form-control" type=text ng-model="input.text"></input>
+      <br>
     </div>
   </div>
   <div class="modal-footer">

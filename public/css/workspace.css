@@ -10,7 +10,12 @@
   height: 85vh;
 }
 
+#configs-bar {
+  margin-left: -45px;
+}
+
 #configs-list{
+  margin-left: -43px;
   overflow: auto;
   overflow-y: hidden;
 }
@@ -42,6 +47,41 @@
   height: 100%;
   min-height: 100%;
   overflow: auto;
+}
+
+.project-element {
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 4px 16px 4px 10px;
+}
+
+.project-element-active {
+  border: 1px solid green;
+  border-radius: 10px;
+  padding: 4px 16px 4px 10px;
+  background-color: rgba(0, 255, 0, 0.3);
+}
+
+.close-button {
+  border-radius: 40px;
+  width: 30px;
+  height: 30px;
+  background-color: #FA5252;
+  border: 1px solid #FA5200;
+  color: black;
+  padding-top: 4px;
+  margin-left: 10px;
+  margin-right: -10px;
+}
+
+.new-button {
+  color: white;
+  border: 0px;
+  border-radius: 10px;
+  height: 40px;
+  background-color: green;
+  padding: 10px 10px;
+  border-color: ;
 }
 
 .workspace-controls{
