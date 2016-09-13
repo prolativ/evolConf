@@ -148,6 +148,9 @@ define(['./module',
     this.getConfigFileName = function(configName){
       return projectService.getConfigFileName(configName);
     };
+    this.ifConfigSelected = function(configName){
+      return configName === this.configName;
+    }
 
     $scope.$on("projectLoaded", function(event, action){
       self.workspace.editionMode = projectService.getProjectType();
@@ -165,7 +168,7 @@ define(['./module',
 
     $scope.$on("downloadConfigFiles", function(event, downloadingFun){
       for(var i=0; i<self.configNames.length; ++i){
-        var workspace = new Blockly.Workspace(); 
+        var workspace = new Blockly.Workspace();
         var configName = self.configNames[i];
         var configFileName = projectService.getConfigFileName(configName);
         var xml = projectService.getBlocksXml(configName, "implementation");
