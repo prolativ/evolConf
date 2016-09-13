@@ -40,10 +40,22 @@ define(['./module',
 
       this.workspace.addChangeListener(onWorkspaceChange);
 
+      this.workspace.editionMode = projectService.getProjectType();
+
+      this.workspace.cleanWorkspace = function(){
+        this.clear();
+        onWorkspaceChange();
+      };
+
+      this.workspace.reloadFromTemplate = function(){
+        this.clear();
+        self.loadBlocks(self.configName, "template", true);
+        onWorkspaceChange();
+      }
+
       this.hiddenSidebar = false;
       this.isCodeVisible = true;
 
-      this.workspace.editionMode = projectService.getProjectType();
       this.configNames = projectService.getConfigNames();
       this.configName = this.configNames[0];
 
@@ -93,16 +105,6 @@ define(['./module',
       this.loadBlocks(this.configName, this.workspace.editionMode, implementingTemplate);
     };
 
-    this.cleanWorkspace = function() {
-      this.workspace.clear();
-
-      if(this.workspace.editionMode == "implementation"){
-        this.loadBlocks(this.configName, "template", true);
-      }
-
-      onWorkspaceChange();
-    };
-
     this.generateCode = function(){
       return codeGenerator.generateCode(this.workspace);
     };
@@ -139,6 +141,14 @@ define(['./module',
       return this.workspace.editionMode == 'implementation';
     };
 
+    this.configFileNameVisible = function(configName){
+      return configName == this.configName && this.workspace.editionMode == 'template';
+    };
+
+    this.getConfigFileName = function(configName){
+      return projectService.getConfigFileName(configName);
+    };
+
     $scope.$on("projectLoaded", function(event, action){
       self.workspace.editionMode = projectService.getProjectType();
       self.configNames = projectService.getConfigNames();
@@ -165,7 +175,6 @@ define(['./module',
         downloadingFun(configFileName, code);
       }
     });
-
 
     this.init();
   }]);

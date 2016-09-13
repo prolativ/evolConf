@@ -13,6 +13,8 @@
         <li><a ng-click="appCtrl.generateConfigFilesAction()" ng-show="workspaceCtrl.canDownloadConfigs()">
           {{appCtrl.msg.project.generateConfig}}<i class="fa fa-download pull-right"></i>
         </a></li>
+        <li class="header">{{appCtrl.msg.project.view}}</li>
+        <li><a ng-click="workspaceCtrl.toggleCodeVisible()">{{appCtrl.msg.project.toggleCode}}<i class="fa fa-file pull-right"></i></a></li>
         
         <input id="file-input-open-project" type="file" ng-show="false"
           cfg-file-loaded="appCtrl.handleOpenFile($fileContent, 'openProject')"/>
@@ -29,7 +31,8 @@
           <li ng-repeat="configName in workspaceCtrl.configNames">
             <div>
               <span ng-click="workspaceCtrl.selectConfig(configName)">{{configName}}</span>
-              <button ng-show="workspaceCtrl.configsEditable()" ng-click="workspaceCtrl.removeConfig(configName)">X</button>
+              <span ng-if="workspaceCtrl.configFileNameVisible(configName)"> [{{workspaceCtrl.getConfigFileName(configName)}}]</span>
+              <button ng-if="workspaceCtrl.configsEditable()" ng-click="workspaceCtrl.removeConfig(configName)">X</button>
             </div>
           </li>
           <li ng-show="workspaceCtrl.configsEditable()">
@@ -46,10 +49,6 @@
         <div id="code-preview" ng-show="workspaceCtrl.isCodeVisible">
           <pre><code id="generated-code"></code></pre>
         </div>
-      </div>
-      <div class="workspace-controls">
-        <button ng-click="workspaceCtrl.cleanWorkspace()">{{workspaceCtrl.msg.workspace.cleanWorkspace}}</button>
-        <button ng-click="workspaceCtrl.toggleCodeVisible()">{{workspaceCtrl.msg.workspace.toggleCode}}</button>
       </div>
     </section>
   </div>

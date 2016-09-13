@@ -50,14 +50,6 @@
         'blockly.base',
         'blockly.msg'
       ],
-      'blockly.inject': {
-        deps: [
-          'blockly.base',
-          'blockly.blocks',
-          'blockly.msg'
-        ],
-        exports: 'Blockly'
-      },
       'blockly.javascript': [
         'blockly.base',
         'blockly.msg'

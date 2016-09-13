@@ -1,5 +1,9 @@
 define(function(){
   var en = {
+    blocks: {
+      fromTemplate: "Reload from template"
+    },
+
     config: {
       fileName: "File's name",
       name: "Configuration's name",
@@ -42,16 +46,9 @@ define(function(){
       implementTemplate: "Configuration from template",
       openProject: "Open project",
       save: "Save project",
-      title: "Project"
-    },
-
-    workspace: {
-      cleanWorkspace: "Clean workspace",
-      clearConsole: "Clear console",
-      run: "Run",
-      stop: "Stop",
+      title: "Project",
       toggleCode: "Show/hide code",
-      toggleConsole: "Show/hide console"
+      view: "View"
     }
   };
 

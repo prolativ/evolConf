@@ -1,5 +1,9 @@
 define(function(){
   var pl = {
+    blocks: {
+      fromTemplate: "Wczytaj ze wzorca"
+    },
+
     config: {
       fileName: "Nazwa pliku",
       name: "Nazwa konfiguracji",
@@ -42,15 +46,9 @@ define(function(){
       newImplementation: "Konfiguracja ze wzorca",
       openProject: "Otwórz projekt",
       save: "Zapisz projekt",
-      title: "Projekt"
-    },
-
-    workspace: {
-      cleanWorkspace: "Usuń bloczki",
-      clearConsole: "Wyczyść konsolę",
-      run: "Uruchom",
-      stop: "Zatrzymaj",
-      toggleCode: "Pokaż/ukryj kod"
+      title: "Projekt",
+      toggleCode: "Pokaż/ukryj kod",
+      view: "Widok"
     }
   };
 
