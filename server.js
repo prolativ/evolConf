@@ -1,7 +1,7 @@
 var express = require("express");
 var path =require("path");
 
-var port = parseInt(process.argv[3], 10) || 3000;
+var port = parseInt(process.argv[2], 10) || 3000;
 
 var app = express();
 
