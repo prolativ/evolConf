@@ -307,7 +307,7 @@ define(['app.msg',
     }
     Blockly.Events.fire(
         new Blockly.Events.Ui(this.block_, 'commentOpen', !visible, visible));
-    if (!this.textarea_ || goog.userAgent.IE) {
+    if (goog.userAgent.IE) {
       // Steal the code from warnings to make an uneditable text bubble.
       // MSIE does not support foreignobject; textareas are impossible.
       // http://msdn.microsoft.com/en-us/library/hh834675%28v=vs.85%29.aspx

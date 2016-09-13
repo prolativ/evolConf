@@ -6,15 +6,15 @@
       </div>
       <ul class="sidebar-menu">
         <li class="header">{{appCtrl.msg.project.title}}</li>
-        <li><a ng-click="appCtrl.newTemplateAction()">{{appCtrl.msg.project.newTemplate}}<i class="fa fa-file pull-right"></i></a></li>
-        <li><a ng-click="appCtrl.implementTemplateAction()">{{appCtrl.msg.project.implementTemplate}}<i class="fa fa-file pull-right"></i></a></li>
-        <li><a ng-click="appCtrl.openProjectAction()">{{appCtrl.msg.project.openProject}}<i class="fa fa-upload pull-right"></i></a></li>
-        <li><a ng-click="appCtrl.saveProjectAction()">{{appCtrl.msg.project.save}}<i class="fa fa-download pull-right"></i></a></li>
+        <li><a ng-click="appCtrl.newTemplateAction()">{{appCtrl.msg.project.newTemplate}}<i class="fa fa-file-o pull-right" aria-hidden="true"></i></a></li>
+        <li><a ng-click="appCtrl.implementTemplateAction()">{{appCtrl.msg.project.implementTemplate}}<i class="fa fa-file pull-right" aria-hidden="true"></i></a></li>
+        <li><a ng-click="appCtrl.openProjectAction()">{{appCtrl.msg.project.openProject}}<i class="fa fa-upload pull-right" aria-hidden="true"></i></a></li>
+        <li><a ng-click="appCtrl.saveProjectAction()">{{appCtrl.msg.project.save}}<i class="fa fa-download pull-right" aria-hidden="true"></i></a></li>
         <li><a ng-click="appCtrl.generateConfigFilesAction()" ng-show="workspaceCtrl.canDownloadConfigs()">
-          {{appCtrl.msg.project.generateConfig}}<i class="fa fa-download pull-right"></i>
+          {{appCtrl.msg.project.generateConfig}}<i class="fa fa-file-code-o pull-right" aria-hidden="true"></i>
         </a></li>
         <li class="header">{{appCtrl.msg.project.view}}</li>
-        <li><a ng-click="workspaceCtrl.toggleCodeVisible()">{{appCtrl.msg.project.toggleCode}}<i class="fa fa-file pull-right"></i></a></li>
+        <li><a ng-click="workspaceCtrl.toggleCodeVisible()">{{appCtrl.msg.project.toggleCode}}<i class="fa fa-eye pull-right" aria-hidden="true"></i></a></li>
 
         <input id="file-input-open-project" type="file" ng-show="false"
           cfg-file-loaded="appCtrl.handleOpenFile($fileContent, 'openProject')"/>
@@ -29,22 +29,18 @@
       <div class="configs-bar">
         <ul id="configs-list">
           <li ng-repeat="configName in workspaceCtrl.configNames">
-
-            <div class="project-element-active" ng-show="workspaceCtrl.ifConfigSelected(configName)">
+            <div ng-class="workspaceCtrl.isConfigSelected(configName) ? 'project-element-active' : 'project-element'">
               <span ng-click="workspaceCtrl.selectConfig(configName)">{{configName}}</span>
               <span ng-if="workspaceCtrl.configFileNameVisible(configName)"> [{{workspaceCtrl.getConfigFileName(configName)}}]</span>
-              <button class="close-button" ng-show="workspaceCtrl.configsEditable()" ng-click="workspaceCtrl.removeConfig(configName)">X</button>
-            </div>
-            <div class="project-element" ng-show="!workspaceCtrl.ifConfigSelected(configName)">
-              <span ng-click="workspaceCtrl.selectConfig(configName)">{{configName}}</span>
-              <span ng-if="workspaceCtrl.configFileNameVisible(configName)"> [{{workspaceCtrl.getConfigFileName(configName)}}]</span>
-              <button class="close-button" ng-show="workspaceCtrl.configsEditable()" ng-click="workspaceCtrl.removeConfig(configName)">X</button>
+              <i class="fa fa-times" aria-hidden="true" ng-if="workspaceCtrl.isConfigSelectedAndEditable(configName)"
+                ng-click="workspaceCtrl.removeConfig(configName)"></i>
             </div>
 
           </li>
           <li ng-show="workspaceCtrl.configsEditable()">
-            <div>
-              <button class="new-button" ng-click="appCtrl.addConfigAction()">+ {{workspaceCtrl.msg.config.new}}</button>
+            <div class="new-button" ng-click="appCtrl.addConfigAction()">
+              <span>{{workspaceCtrl.msg.config.new}}</span>
+              <i class="fa fa-plus" aria-hidden="true"></i>
             </div>
           </li>
         </ul>

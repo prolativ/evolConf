@@ -141,15 +141,16 @@ define(['./module',
       return this.workspace.editionMode == 'implementation';
     };
 
-    this.configFileNameVisible = function(configName){
-      return configName == this.configName && this.workspace.editionMode == 'template';
-    };
-
     this.getConfigFileName = function(configName){
       return projectService.getConfigFileName(configName);
     };
-    this.ifConfigSelected = function(configName){
+
+    this.isConfigSelected = function(configName){
       return configName === this.configName;
+    };
+
+    this.isConfigSelectedAndEditable = function(configName){
+      return configName === this.configName && this.workspace.editionMode == 'template';
     }
 
     $scope.$on("projectLoaded", function(event, action){
