@@ -27,10 +27,10 @@ define(function(){
       createWith: "stwórz mapę:",
       createWithContainerTileAdd: "mapa",
       createWithEntryTile: "wpis",
-      getValue: "sprawdź klucz"
-      key: "kluczem",
-      update: "modyfikuj mapę"
-      value: "z wartością",
+      getValue: "sprawdź klucz",
+      key: "z kluczem",
+      update: "modyfikuj mapę",
+      value: "o wartości",
       valueFrom: "w mapie"
     },
 
@@ -42,8 +42,8 @@ define(function(){
     project: {
       generateConfig: "Generuj pliki",
       name: "Nazwa projektu:",
-      newTemplate: "New wzorzec",
-      newImplementation: "Konfiguracja ze wzorca",
+      newTemplate: "Nowy wzorzec",
+      implementTemplate: "Konfiguracja ze wzorca",
       openProject: "Otwórz projekt",
       save: "Zapisz projekt",
       title: "Projekt",
