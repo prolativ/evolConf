@@ -5,7 +5,7 @@ define(['angular',
 
   Blockly.Blocks.maps = {};
 
-  Blockly.Blocks.maps.HUE = 260;
+  Blockly.Blocks.maps.HUE = 50;
 
   Blockly.Blocks['maps_create_empty'] = {
     init: function() {
