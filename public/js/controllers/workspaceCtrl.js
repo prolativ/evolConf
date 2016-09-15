@@ -54,7 +54,7 @@ define(['./module',
       }
 
       this.hiddenSidebar = false;
-      this.isCodeVisible = true;
+      this.isCodeVisible = false;
 
       this.configNames = projectService.getConfigNames();
       this.configName = this.configNames[0];
@@ -151,6 +151,10 @@ define(['./module',
 
     this.isConfigSelectedAndEditable = function(configName){
       return configName === this.configName && this.workspace.editionMode == 'template';
+    }
+
+    this.isConfigFileNameVisible = function(configName){
+      return this.isConfigSelectedAndEditable(configName);
     }
 
     $scope.$on("projectLoaded", function(event, action){

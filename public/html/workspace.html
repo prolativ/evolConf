@@ -29,9 +29,10 @@
       <div class="configs-bar">
         <ul id="configs-list">
           <li ng-repeat="configName in workspaceCtrl.configNames">
-            <div ng-class="workspaceCtrl.isConfigSelected(configName) ? 'project-element-active' : 'project-element'">
-              <span ng-click="workspaceCtrl.selectConfig(configName)">{{configName}}</span>
-              <span ng-if="workspaceCtrl.configFileNameVisible(configName)"> [{{workspaceCtrl.getConfigFileName(configName)}}]</span>
+            <div ng-class="workspaceCtrl.isConfigSelected(configName) ? 'project-element-active' : 'project-element'"
+                ng-click="workspaceCtrl.selectConfig(configName)">
+              <span>{{configName}}</span>
+              <span ng-if="workspaceCtrl.isConfigFileNameVisible(configName)"> [{{workspaceCtrl.getConfigFileName(configName)}}]</span>
               <i class="fa fa-times" aria-hidden="true" ng-if="workspaceCtrl.isConfigSelectedAndEditable(configName)"
                 ng-click="workspaceCtrl.removeConfig(configName)"></i>
             </div>
